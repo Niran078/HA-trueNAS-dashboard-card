@@ -28,3 +28,9 @@ After reloading we can finally setup the actual card, my example is linked below
 
 - **Dashboard card** → [`nas_dashboard.yaml`](nas_dashboard.yaml)
 
+
+
+## Credits
+
+This dashboard is based on the **Nas Synology card** created and shared by Spl4sh on the Home Assistant French Community Forum:  
+[Carte NAS Synology – Page 4](https://forum.hacf.fr/t/carte-nas-synology/42608?page=4)
