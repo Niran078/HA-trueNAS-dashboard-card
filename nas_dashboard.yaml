@@ -1,0 +1,179 @@
+type: custom:stack-in-card
+mode: vertical
+cards:
+  - type: picture
+    image: /local/Nas%20bewerkt.png   # 📌 Change path if your NAS image is stored elsewhere
+    tap_action:
+      action: none
+    card_mod:
+      style: |
+        ha-card {
+          background: transparent;
+          box-shadow: none;
+          border: none;
+          padding-top: 4px;
+          margin-bottom: 0;     /* no extra gap under the image */
+        }
+        img {
+          display: block;
+          margin: 0 auto;
+          max-width: 80px;
+          height: auto;
+        }
+  - type: custom:stack-in-card
+    mode: vertical
+    cards:
+      - type: entities
+        entities:
+          - entity: binary_sensor.truenas_system_mainpool_healthy   # 📌 Replace with your TrueNAS pool healthy binary sensor
+            type: custom:multiple-entity-row
+            name: " "
+            icon: mdi:harddisk
+            show_state: false
+            entities:
+              - entity: sensor.truenas_mainpool_vrij_gb             # 📌 Replace with your “Free GB” sensor
+                name: Vrij (GB)
+                format: precision0
+              - entity: sensor.truenas_mainpool_capaciteit_gb       # 📌 Replace with your “Total GB” sensor
+                name: Totaal (GB)
+                format: precision0
+          - entity: sensor.truenas_system_temperature               # 📌 Replace with your NAS CPU temperature sensor
+            type: custom:multiple-entity-row
+            name: " "
+            icon: mdi:thermometer
+            show_state: false
+            entities:
+              - entity: sensor.ssd1_temperature_string              # 📌 Replace with your SSD1 temp string sensor
+                name: SSD1
+                tap_action:
+                  action: more-info
+                  entity: sensor.truenas_disks_sda                  # 📌 Replace with your SSD1 temp sensor (numeric)
+                hold_action:
+                  action: more-info
+                  entity: sensor.truenas_disks_sda
+              - entity: sensor.ssd2_temperature_string              # 📌 Replace with your SSD2 temp string sensor
+                name: SSD2
+                tap_action:
+                  action: more-info
+                  entity: sensor.truenas_disks_sdb                  # 📌 Replace with your SSD2 temp sensor (numeric)
+                hold_action:
+                  action: more-info
+                  entity: sensor.truenas_disks_sdb
+              - entity: sensor.ssd3_temperature_string              # 📌 Replace with your SSD3 temp string sensor
+                name: SSD3
+                tap_action:
+                  action: more-info
+                  entity: sensor.truenas_disks_sdc                  # 📌 Replace with your SSD3 temp sensor (numeric)
+                hold_action:
+                  action: more-info
+                  entity: sensor.truenas_disks_sdc
+              - entity: sensor.ssd4_temperature_string              # 📌 Replace with your SSD4 temp string sensor
+                name: SSD4
+                tap_action:
+                  action: more-info
+                  entity: sensor.truenas_disks_sdd                  # 📌 Replace with your SSD4 temp sensor (numeric)
+                hold_action:
+                  action: more-info
+                  entity: sensor.truenas_disks_sdd
+              - entity: sensor.nvme_temperature_string              # 📌 Replace with your NVMe temp string sensor
+                name: NVMe
+                tap_action:
+                  action: more-info
+                  entity: sensor.truenas_disks_nvme0n1               # 📌 Replace with your NVMe temp sensor (numeric)
+                hold_action:
+                  action: more-info
+                  entity: sensor.truenas_disks_nvme0n1
+              - entity: sensor.cpu_temperature_string               # 📌 Replace with your CPU temp string sensor
+                name: CPU
+                tap_action:
+                  action: more-info
+                  entity: sensor.truenas_system_temperature         # 📌 Replace with your CPU temp sensor (numeric)
+                hold_action:
+                  action: more-info
+                  entity: sensor.truenas_system_temperature
+          - entity: sensor.truenas_uptime_kort                       # 📌 Replace with your short uptime sensor
+            icon: mdi:timer-outline
+            name: " "
+        card_mod:
+          style: >
+            ha-card { border: none !important; font-weight: 500; margin-right:
+            0px; }
+    keep:
+      background: true
+      margin: false
+      box_shadow: false
+    card_mod:
+      style: |
+        ha-card {
+          /* remove the faint line here */
+          border: none !important;
+          border-top: none !important;
+          box-shadow: none !important;
+
+          overflow: hidden;
+          border-radius: var(--ha-card-border-radius, 16px);
+          border-bottom-left-radius: 0 !important;
+          border-bottom-right-radius: 0 !important;
+        }
+        /* stack-in-card sometimes inserts a divider element between children */
+        #root .separator { display: none !important; }
+
+        #root > * { margin: 0 !important; }
+        #root ha-card {
+          border-radius: 0 !important;
+          box-shadow: none !important;
+          border: none !important;
+        }
+  - type: custom:stack-in-card
+    mode: horizontal
+    cards:
+      - type: custom:stack-in-card
+        cards:
+          - type: custom:apexcharts-card
+            series:
+              - entity: sensor.truenas_system_cpu_usage              # 📌 Replace with your CPU usage sensor (%)
+          - type: custom:mushroom-template-card
+            primary: CPU
+            secondary: |
+              {{ states('sensor.truenas_system_cpu_usage')|round(0) }}%   # 📌 Replace with same CPU usage sensor
+      - type: custom:stack-in-card
+        cards:
+          - type: custom:apexcharts-card
+            series:
+              - entity: sensor.truenas_system_memory_usage           # 📌 Replace with your RAM usage sensor (%)
+          - type: custom:mushroom-template-card
+            primary: RAM
+            secondary: |
+              {{ states('sensor.truenas_system_memory_usage')|round(0) }}%  # 📌 Replace with same RAM usage sensor
+      - type: custom:stack-in-card
+        cards:
+          - type: custom:apexcharts-card
+            series:
+              - entity: sensor.truenas_mainpool_gebruikt_pct         # 📌 Replace with your pool used % sensor
+          - type: custom:mushroom-template-card
+            primary: Schijf
+            secondary: |
+              {{ states('sensor.truenas_mainpool_gebruikt_pct')|round(0) }}% # 📌 Replace with same pool used % sensor
+  - type: custom:vertical-stack-in-card
+    cards:
+      - square: false
+        type: grid
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: sensor.truenas_system_eno1_rx                    # 📌 Replace with your download (RX) network sensor
+          - type: custom:mushroom-entity-card
+            entity: sensor.truenas_system_eno1_tx                    # 📌 Replace with your upload (TX) network sensor
+      - type: custom:mini-graph-card
+        entities:
+          - entity: sensor.truenas_system_eno1_rx                    # 📌 Replace with your download (RX) network sensor
+          - entity: sensor.truenas_system_eno1_tx                    # 📌 Replace with your upload (TX) network sensor
+  - type: custom:vertical-stack-in-card
+    cards:
+      - square: false
+        type: grid
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: sensor.laptop_roos_vermogen                      # 📌 Replace with your NAS power usage sensor
+      - type: custom:mini-graph-card
+        entities:
+          - entity: sensor.laptop_roos_vermogen                      # 📌 Replace with your NAS power usage sensor
