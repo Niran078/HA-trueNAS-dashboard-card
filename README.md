@@ -26,5 +26,5 @@ To make the dashboard nicer I used some added some template sensors in my config
 
 After reloading we can finaly setup the actual card, my example is linked below:
 
-**Dashboard card** → [`nas_dashboard.yaml`](nas_dashboard.yaml)
+- **Dashboard card** → [`nas_dashboard.yaml`](nas_dashboard.yaml)
 
