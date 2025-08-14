@@ -1,0 +1,71 @@
+- sensor:
+      - name: "TrueNAS Mainpool Capaciteit GB"
+        unique_id: truenas_mainpool_capaciteit_gb
+        unit_of_measurement: "GB"
+        device_class: data_size
+        state: >
+          {% set rep = states('sensor.truenas_datasets_mainpool')|float(0) %}            # 📌 Replace with your “Used GB” dataset sensor
+          {% set vrij = states('sensor.truenas_system_mainpool_free')|float(0) %}        # 📌 Replace with your “Free GB” sensor
+          {% set cap = rep + vrij if vrij > rep else rep %}
+          {{ cap | round(0) }}
+
+      - name: "TrueNAS Mainpool Vrij GB"
+        unique_id: truenas_mainpool_vrij_gb
+        unit_of_measurement: "GB"
+        device_class: data_size
+        state: >
+          {{ states('sensor.truenas_system_mainpool_free')|float(0) | round(0) }}        # 📌 Replace with your “Free GB” sensor
+
+      - name: "TrueNAS Mainpool Gebruikt Pct"
+        unique_id: truenas_mainpool_gebruikt_pct
+        unit_of_measurement: "%"
+        state: >
+          {% set rep = states('sensor.truenas_datasets_mainpool')|float(0) %}            # 📌 Replace with your “Used GB” dataset sensor
+          {% set vrij = states('sensor.truenas_system_mainpool_free')|float(0) %}        # 📌 Replace with your “Free GB” sensor
+          {% set cap = rep + vrij if vrij > rep else rep %}
+          {% if cap > 0 %} {{ ((cap - vrij) / cap * 100) | round(0) }} {% else %} 0 {% endif %}
+
+      # Uptime -> "20 uur" / "10 dagen"
+      - name: "TrueNAS Uptime Kort"
+        unique_id: truenas_uptime_kort
+        state: >
+          {% set raw = states('sensor.truenas_system_uptime') %}                         # 📌 Replace with your uptime sensor
+          {% set as_ts = raw|as_datetime(default=None) %}
+          {% set secs = (now() - as_ts).total_seconds() if as_ts else (raw|float(0)) %}
+          {% set days = (secs // 86400) | int %}
+          {% set hours = ((secs % 86400) // 3600) | int %}
+          {% if days >= 1 %}{{ days }} dag{% if days != 1 %}en{% endif %}{% else %}{{ hours }} uur{% endif %}
+  - sensor:
+      - name: "SSD1 Temperature String"
+        unique_id: truenas_ssd1_temp_string
+        icon: mdi:thermometer
+        state: "{{ (states('sensor.truenas_disks_sda') | float(0)) | round(0) ~ '\u202F°C' }}"   # 📌 Replace with your SSD1 temp sensor
+
+      - name: "SSD2 Temperature String"
+        unique_id: truenas_ssd2_temp_string
+        icon: mdi:thermometer
+        state: "{{ (states('sensor.truenas_disks_sdb') | float(0)) | round(0) ~ '\u202F°C' }}"   # 📌 Replace with your SSD2 temp sensor
+
+      - name: "SSD3 Temperature String"
+        unique_id: truenas_ssd3_temp_string
+        icon: mdi:thermometer
+        state: "{{ (states('sensor.truenas_disks_sdc') | float(0)) | round(0) ~ '\u202F°C' }}"   # 📌 Replace with your SSD3 temp sensor
+
+      - name: "SSD4 Temperature String"
+        unique_id: truenas_ssd4_temp_string
+        icon: mdi:thermometer
+        state: "{{ (states('sensor.truenas_disks_sdd') | float(0)) | round(0) ~ '\u202F°C' }}"   # 📌 Replace with your SSD4 temp sensor
+
+      - name: "NVMe Temperature String"
+        unique_id: truenas_nvme_temp_string
+        icon: mdi:thermometer
+        state: "{{ (states('sensor.truenas_disks_nvme0n1') | float(0)) | round(0) ~ '\u202F°C' }}"  # 📌 Replace with your NVMe temp sensor
+
+      - name: "CPU Temperature String"
+        unique_id: truenas_cpu_temp_string
+        icon: mdi:thermometer
+        state: "{{ (states('sensor.truenas_system_temperature') | float(0)) | round(0) ~ '\u202F°C' }}" # 📌 Replace with your CPU temp sensor
+  - sensor:
+      - name: "CPU usage (rounded)"
+        state: "{{ states('sensor.truenas_system_cpu_usage')|float(0)|round(0) }}"       # 📌 Replace with your CPU usage sensor
+        unit_of_measurement: "%"
