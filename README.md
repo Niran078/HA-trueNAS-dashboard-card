@@ -1,11 +1,14 @@
 Below is a description on how to setup a clean and simple Home Assistant dashboard card.
 
+My example:
+
 ![NAS Dashboard Preview](dashboard.png)
 
 Before we start you'll need the following things:
 
 -  Have [HACS]([https://example.com](https://github.com/hacs)) installed
 -  Have the [trueNAS integration](https://community.home-assistant.io/t/truenas-integration/410431) for HA installed. **Note:** I had to install the latest beta version in order for me to have the integration working (v1.4b4)
+-  An image of your NAS saved in your homeassistant/wwww/ folder or somewhere else, you can ofcourse make this card without the image as well
 -  Through HACS make sure you have the following installed as well:
     - [card-mod](https://github.com/thomasloven/lovelace-card-mod) – Allows you to apply custom CSS styles to cards in Home Assistant.
     - [stack-in-card](https://github.com/custom-cards/stack-in-card) – Lets you stack multiple cards inside a single card without extra borders/margins.
