@@ -1,6 +1,6 @@
 Below is a description on how to setup a clean and simple Home Assistant dashboard card.
 
-![NAS Dashboard Preview]([dashboard.png](https://github.com/Niran078/HA-trueNAS-dashboard-card/blob/main/dashboard.png))
+![NAS Dashboard Preview]([dashboard.png](https://github.com/Niran078/HA-trueNAS-dashboard-card/blob/main/dashboard.png)
 
 Before we start you'll need the following things:
 
