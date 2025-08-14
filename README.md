@@ -18,13 +18,13 @@ Before we start you'll need the following things:
     - [mini-graph-card](https://github.com/kalkih/mini-graph-card) – Compact and good-looking line graphs.
     - [vertical-stack-in-card](https://github.com/ofekashery/vertical-stack-in-card) – Combine multiple cards vertically into one card without extra borders.
 
-When evertything is installed its a good idea to refresh or restart HA and also check if all you trueNAS entities are found.
+When everything is installed its a good idea to refresh or restart HA and also check if all you trueNAS entities are found.
 
 To make the dashboard nicer I used some added some template sensors in my configurations.yaml, this helps rounding values, adds °C and even creates a new sensor which shows the free capacity of your data pool in %. Here is my example:
 
 - **Template sensors** → [`truenas_template_sensors.yaml`](truenas_template_sensors.yaml)
 
-After reloading we can finaly setup the actual card, my example is linked below:
+After reloading we can finally setup the actual card, my example is linked below:
 
 - **Dashboard card** → [`nas_dashboard.yaml`](nas_dashboard.yaml)
 
